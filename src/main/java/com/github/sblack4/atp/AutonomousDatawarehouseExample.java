@@ -26,8 +26,6 @@ public class AutonomousDatawarehouseExample {
     public static void main(String[] args) throws Exception {
         String configurationFilePath = "~/.oci/config";
         String profile = "DEFAULT";
-
-        // TODO: Fill in these values
         String compartmentId = args[0];
 
         AuthenticationDetailsProvider provider =

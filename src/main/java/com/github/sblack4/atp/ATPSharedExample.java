@@ -1,8 +1,5 @@
 package com.github.sblack4.atp;
 
-/**
- * Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
- */
 import com.oracle.bmc.Region;
 import com.oracle.bmc.auth.AuthenticationDetailsProvider;
 import com.oracle.bmc.auth.ConfigFileAuthenticationDetailsProvider;
@@ -28,8 +25,6 @@ public class ATPSharedExample {
     public static void main(String[] args) throws Exception {
         String configurationFilePath = "~/.oci/config";
         String profile = "DEFAULT";
-
-        // TODO: Fill in these values
         String compartmentId = args[0];
 
         AuthenticationDetailsProvider provider =
@@ -42,10 +37,7 @@ public class ATPSharedExample {
 
         // Create
         CreateAutonomousDatabaseDetails createRequest = createAtpRequest(compartmentId);
-
-        System.out.println(
-                "Creating Autonomous Transaction Processing Shared with request : \n"
-                        + createRequest);
+        System.out.println("Creating Autonomous Transaction Processing Shared with request : \n" + createRequest);
         AutonomousDatabase atpShared = createATP(dbClient, createRequest);
         System.out.println("ATP Shared instance is provisioning : " + atpShared);
 
@@ -53,19 +45,16 @@ public class ATPSharedExample {
         System.out.println("Instance is provisioned:" + atpShared);
 
         // Get
-        atpShared =
-                dbClient.getAutonomousDatabase(
-                                GetAutonomousDatabaseRequest.builder()
-                                        .autonomousDatabaseId(atpShared.getId())
-                                        .build())
-                        .getAutonomousDatabase();
+        atpShared = dbClient.getAutonomousDatabase(
+            GetAutonomousDatabaseRequest.builder()
+                .autonomousDatabaseId(atpShared.getId())
+                .build()
+        ).getAutonomousDatabase();
         System.out.println("GET request returned :" + atpShared);
 
         // Scale
         UpdateAutonomousDatabaseDetails updateRequest = scaleAtpRequest();
-        System.out.println(
-                "Updating Autonomous Transaction Processing Shared with request : "
-                        + updateRequest);
+        System.out.println("Updating Autonomous Transaction Processing Shared with request : " + updateRequest);
         AutonomousDatabase updatedAtpShared = updateATP(dbClient, updateRequest, atpShared.getId());
         System.out.println("ATP Shared instance is scaling : " + updatedAtpShared);
 
@@ -74,33 +63,27 @@ public class ATPSharedExample {
 
         // Update Display Name
         updateRequest = updateDisplayNameAtpRequest();
-        System.out.println(
-                "Updating Autonomous Transaction Processing Shared with request : "
-                        + updateRequest);
+        System.out.println("Updating Autonomous Transaction Processing Shared with request : " + updateRequest);
         updatedAtpShared = updateATP(dbClient, updateRequest, updatedAtpShared.getId());
-
         System.out.println("Instance is updated:" + updatedAtpShared);
 
         // Stop
-        System.out.println(
-                "Stopping Autonomous Transaction Processing Shared : " + updatedAtpShared);
-        atpShared =
-                dbClient.stopAutonomousDatabase(
-                                StopAutonomousDatabaseRequest.builder()
-                                        .autonomousDatabaseId(updatedAtpShared.getId())
-                                        .build())
-                        .getAutonomousDatabase();
+        System.out.println("Stopping Autonomous Transaction Processing Shared : " + updatedAtpShared);
+        atpShared = dbClient.stopAutonomousDatabase(
+            StopAutonomousDatabaseRequest.builder()
+                .autonomousDatabaseId(updatedAtpShared.getId())
+                .build()
+        ).getAutonomousDatabase();
         atpShared = waitForInstanceToBeStopped(dbClient, atpShared.getId());
         System.out.println("Stopped Autonomous Transaction Processing Shared : " + atpShared);
 
         // Start
         System.out.println("Starting Autonomous Transaction Processing Shared : " + atpShared);
-        atpShared =
-                dbClient.startAutonomousDatabase(
-                                StartAutonomousDatabaseRequest.builder()
-                                        .autonomousDatabaseId(updatedAtpShared.getId())
-                                        .build())
-                        .getAutonomousDatabase();
+        atpShared = dbClient.startAutonomousDatabase(
+            StartAutonomousDatabaseRequest.builder()
+                    .autonomousDatabaseId(updatedAtpShared.getId())
+                    .build()
+        ).getAutonomousDatabase();
         atpShared = waitForInstanceToBecomeAvailable(dbClient, atpShared.getId());
         System.out.println("Started Autonomous Transaction Processing Shared : " + atpShared);
 
@@ -111,13 +94,12 @@ public class ATPSharedExample {
                         .autonomousDatabaseId(updatedAtpShared.getId())
                         .build());
         DatabaseWaiters waiter = dbClient.getWaiters();
-        GetAutonomousDatabaseResponse response =
-                waiter.forAutonomousDatabase(
-                                GetAutonomousDatabaseRequest.builder()
-                                        .autonomousDatabaseId(atpShared.getId())
-                                        .build(),
-                                AutonomousDatabase.LifecycleState.Terminated)
-                        .execute();
+        GetAutonomousDatabaseResponse response = waiter.forAutonomousDatabase(
+            GetAutonomousDatabaseRequest.builder()
+                    .autonomousDatabaseId(atpShared.getId())
+                    .build(),
+            AutonomousDatabase.LifecycleState.Terminated
+        ).execute();
 
         dbClient.close();
     }
