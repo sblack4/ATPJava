@@ -1,11 +1,33 @@
 # ATP-REST-Java 
 REST APIs for Oracle Autonomous Transaciton Processing Service written in Java 
 
+
+## Objectives 
+- A base image based on frolvlad/alpine-glibc:alpine-3.8  that includes Oracle instant client 18.3, sqlplus and sqlcl for basic sql connectivity to an oracle ATP database
+https://hub.docker.com/r/frolvlad/alpine-glibc/
+- A python, **Java** and node.js image each built on the base image and layered with drivers to connect respective language programs to an ATP database seamlessly Oracle Cloud Infrastructure CLI
+- A sample program that can take a mapped ATP credentials .zip file and connect to the database
+- REST API language scripts for listing, creating, scaling, backing up an ATP instance. See documentation for available REST calls and sample node.js scripts https://github.com/kbhanush/ATP-REST-nodejs
+
+
+- Instant Client -  /opt/oracle/instantclient
+- Credentials wallet - /opt/oracle/database/<ServiceName>/wallet  — include both the zip file and the unzipped files in this folder
+- Tools and scripts- Based on language written in - replace language folder accordingly
+- /opt/oracle/tools/python/restapi
+- /opt/oracle/tools/python/sdk
+- /opt/oracle/tools/cli
+- /opt/oracle/tools/swingbench
+- Sample apps -  /opt/oracle/apps/<app_name>
+- Set PATH variable to include all of the above
+
 ## About
 Try out the Oracle Cloud Infrastructure Java SDK! I've tried to make this as simple as possible, but to *reallly* use the SDK you must read the docs! For developing with the `java` SDK read the java sdk docs, but if all you want to do is run this app you can get by with the SDK/CLI configuration docs. They will walk you through getting the required values to authenticate. 
 
 - java sdk docs https://docs.cloud.oracle.com/iaas/Content/API/SDKDocs/javasdk.htm 
+- download the java sdk https://github.com/oracle/oci-java-sdk/releases 
 - sdk/cli config docs https://docs.cloud.oracle.com/iaas/Content/API/Concepts/sdkconfig.htm 
+- Download SQLcl https://www.oracle.com/technetwork/developer-tools/sqlcl/overview/index.html 
+
 
 ## Running 
 
