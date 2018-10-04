@@ -19,21 +19,22 @@ import static picocli.CommandLine.Command;
 import static picocli.CommandLine.Option;
 
 
-@Command(name="Create", header = "@|green Create an ATP instance with the JAVA OCI SDK |@" )
-public class CreateATP implements Runnable {
-    @Option(names={"-cId", "--compartmentId"}, required = true, description = "Compartment ID")
+@Command(name="create",
+        header = "@|fg(5;0;0),bg(0;0;0) Create an ATP instance with the JAVA OCI SDK |@" )
+public class createAutonomousDatabase implements Runnable {
+    @Option(names={"-cid", "--compartment-id"}, description = "Compartment ID, retrieved from OCI Config")
     public String compartmentId;
 
-    @Option(names={"-dn", "--displayName"}, description = "Display Name for DB, defaults to ${DEFAULT-VALUE}")
+    @Option(names={"-dn", "--display-name"}, description = "Display Name for DB, defaults to ${DEFAULT-VALUE}")
     public String displayName = "javaSDKExample";
 
     @Option(names={"-p", "--password"}, description = "Password for DB, defaults to ${DEFAULT-VALUE}")
     public String password = "Welcome123123123#";
 
-    @Option(names={"-cpu", "--cpuCount"}, description = "CPU Cores, defaults to ${DEFAULT-VALUE}")
+    @Option(names={"-cpu", "--cpu-count"}, description = "CPU Cores, defaults to ${DEFAULT-VALUE}")
     public Integer cpuCount = 1;
 
-    @Option(names={"-tb", "--dbSize"}, description = "DB size in TBs, defaults to ${DEFAULT-VALUE}")
+    @Option(names={"-tb", "--db-size"}, description = "DB size in TBs, defaults to ${DEFAULT-VALUE}")
     public Integer dbSize = 1;
 
     @Option(names={"-c", "--config"}, description = "OCI Config file path, defaults to '~/.oci/config")
@@ -54,7 +55,6 @@ public class CreateATP implements Runnable {
             System.out.println(provider.toString());
 
             DatabaseClient dbClient = new DatabaseClient(provider);
-            dbClient.setRegion(Region.US_PHOENIX_1);
 
             // Create
             Random rand = new Random();
@@ -119,6 +119,6 @@ public class CreateATP implements Runnable {
     }
 
     public static void main(String[] args) {
-        CommandLine.run(new CreateATP(), args);
+        CommandLine.run(new createAutonomousDatabase(), args);
     }
 }

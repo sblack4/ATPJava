@@ -14,12 +14,12 @@ import static picocli.CommandLine.Command;
 import static picocli.CommandLine.Option;
 
 
-@Command(name="Delete", header = "@|green Delete an ATP instance with the JAVA OCI SDK |@" )
-public class DeleteATP implements Runnable {
-    @Option(names={"-cId", "--compartmentId"}, required = true, description = "Compartment ID")
+@Command(name="delete", header = "@|fg(5;0;0),bg(0;0;0)  Delete an ATP instance with the JAVA OCI SDK |@" )
+public class deleteAutonomousDatabase implements Runnable {
+    @Option(names={"-cid", "--compartment-id"}, description = "Compartment ID, retrieved from OCI Config")
     public String compartmentId;
 
-    @Option(names={"-Id", "--adwId"}, required = true, description = "Autonomous Database ID")
+    @Option(names={"-Id", "--adw-id"}, required = true, description = "Autonomous ATPConnectionTest ID")
     public String adwId;
 
     @Option(names={"-c", "--config"}, description = "OCI Config file path, defaults to ${DEFAULT-VALUE}")
@@ -42,7 +42,6 @@ public class DeleteATP implements Runnable {
             System.out.println(provider.toString());
 
             DatabaseClient dbClient = new DatabaseClient(provider);
-            dbClient.setRegion(Region.US_PHOENIX_1);
 
             // Get
             AutonomousDatabase adw =
@@ -91,6 +90,6 @@ public class DeleteATP implements Runnable {
     }
 
     public static void main(String[] args) {
-        CommandLine.run(new DeleteATP(), args);
+        CommandLine.run(new deleteAutonomousDatabase(), args);
     }
 }

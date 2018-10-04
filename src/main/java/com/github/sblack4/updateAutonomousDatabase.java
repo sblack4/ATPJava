@@ -15,18 +15,18 @@ import static picocli.CommandLine.Command;
 import static picocli.CommandLine.Option;
 
 
-@Command(name="Scale", header = "@|green Scale an ATP instance with the JAVA OCI SDK |@" )
-public class ScaleATP implements Runnable {
-    @Option(names={"-cId", "--compartmentId"}, required = true, description = "Compartment ID")
+@Command(name="update", header = "@|fg(5;0;0),bg(0;0;0) Scale an ATP instance with the JAVA OCI SDK |@" )
+public class updateAutonomousDatabase implements Runnable {
+    @Option(names={"-cid", "--compartment-id"}, description = "Compartment ID, retrieved from OCI Config")
     public String compartmentId;
 
-    @Option(names={"-Id", "--adwId"}, required = true, description = "Autonomous Database ID")
+    @Option(names={"-id", "--adw-id"}, required = true, description = "Autonomous ATPConnectionTest ID")
     public String adwId;
 
     @Option(names={"-cpu", "--cpuCount"}, description = "CPU Cores, defaults to ${DEFAULT-VALUE}")
     public Integer cpuCount = 2;
 
-    @Option(names={"-tb", "--dbSize"}, description = "DB size in TBs, defaults to ${DEFAULT-VALUE}")
+    @Option(names={"-tb", "--db-size"}, description = "DB size in TBs, defaults to ${DEFAULT-VALUE}")
     public Integer dbSize = 2;
 
     @Option(names={"-c", "--config"}, description = "OCI Config file path, defaults to ${DEFAULT-VALUE}")
@@ -47,7 +47,6 @@ public class ScaleATP implements Runnable {
             System.out.println(provider.toString());
 
             DatabaseClient dbClient = new DatabaseClient(provider);
-            dbClient.setRegion(Region.US_PHOENIX_1);
 
             DatabaseWaiters waiter = dbClient.getWaiters();
 
@@ -96,6 +95,6 @@ public class ScaleATP implements Runnable {
     }
 
     public static void main(String[] args) {
-        CommandLine.run(new ScaleATP(), args);
+        CommandLine.run(new updateAutonomousDatabase(), args);
     }
 }

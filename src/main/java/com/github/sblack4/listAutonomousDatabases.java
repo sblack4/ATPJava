@@ -15,15 +15,15 @@ import static picocli.CommandLine.Command;
 import static picocli.CommandLine.Option;
 
 
-@Command(name="List", header = "@|green Delete an ATP instance with the JAVA OCI SDK |@" )
-public class ListATP implements Runnable {
-    @Option(names={"-cId", "--compartmentId"}, required = true, description = "Compartment ID")
+@Command(name="list", header = "@|fg(5;0;0),bg(0;0;0) Delete an ATP instance with the JAVA OCI SDK |@" )
+public class listAutonomousDatabases implements Runnable {
+    @Option(names={"-cid", "--compartment-id"}, description = "Compartment ID, retrieved from OCI Config")
     public String compartmentId;
 
-    @Option(names={"-c", "--config"}, required = false, description = "OCI Config file path, defaults to ${DEFAULT-VALUE}")
+    @Option(names={"-c", "--config"}, description = "OCI Config file path, defaults to ${DEFAULT-VALUE}")
     String configurationFilePath = "~/.oci/config";
 
-    @Option(names={"-p", "--profile"}, required = false, description = "OCI profile, defaults to ${DEFAULT-VALUE}")
+    @Option(names={"-p", "--profile"}, description = "OCI profile, defaults to ${DEFAULT-VALUE}")
     String profile = "DEFAULT";
 
     @Option(names = { "-h", "--help" }, usageHelp = true,
@@ -41,7 +41,6 @@ public class ListATP implements Runnable {
             System.out.println(provider.toString());
 
             DatabaseClient dbClient = new DatabaseClient(provider);
-            dbClient.setRegion(Region.US_PHOENIX_1);
 
             ListAutonomousDatabasesRequest dbReq = ListAutonomousDatabasesRequest.builder()
                             .compartmentId(compartmentId)
@@ -78,6 +77,6 @@ public class ListATP implements Runnable {
     }
 
     public static void main(String[] args) {
-        CommandLine.run(new ListATP(), args);
+        CommandLine.run(new listAutonomousDatabases(), args);
     }
 }

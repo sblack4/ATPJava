@@ -7,15 +7,17 @@ import picocli.CommandLine;
 import picocli.CommandLine.*;
 
 
-@Command(name="Connect", header = "@|green Connect an ATP instance with the JDBC in JAVA |@" )
-public class Database implements Runnable{
-    @Option(names={"-u", "--user"}, required = true, description = "Database Username, defaults to ${DEFAULT-VALUE}")
+@Command(name="connect",
+        sortOptions = false,
+        header = "@|fg(5;0;0),bg(0;0;0) Connect to an ATP instance with the JDBC in JAVA |@" )
+public class ATPConnectionTest implements Runnable {
+    @Option(names={"-u", "--user"}, required = true, description = "ATPConnectionTest Username, defaults to ${DEFAULT-VALUE}")
     public String user = "admin";
 
-    @Option(names={"-p", "--password"}, required = true, description = "Database Password, defaults to ${DEFAULT-VALUE}")
+    @Option(names={"-p", "--password"}, required = true, description = "ATPConnectionTest Password, defaults to ${DEFAULT-VALUE}")
     public String password;
 
-    @Option(names={"-sn", "--name"}, required = true, description = "Database Service Name")
+    @Option(names={"-sn", "--service-name"}, required = true, description = "ATPConnectionTest Service Name")
     public String serviceName;
 
     public void run() {
@@ -56,6 +58,6 @@ public class Database implements Runnable{
 
     }
     public static void main(String[] args) {
-        CommandLine.run(new Database(), args);
+        CommandLine.run(new ATPConnectionTest(), args);
     }
 }
