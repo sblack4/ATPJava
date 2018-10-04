@@ -58,7 +58,6 @@ public class stopAutonomousDatabase implements Runnable {
             System.out.println("\n================================\n");
             System.out.println("GET request returned this database:\n" + adw);
 
-            // Delete
             System.out.println("\n================================\n");
             System.out.println("Stopping Autonomous Database: \n" + adw);
             dbClient.stopAutonomousDatabase(
