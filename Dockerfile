@@ -67,10 +67,32 @@ WORKDIR /opt/oracle/tools/nodejs/apps
 RUN git clone https://github.com/kbhanush/ATPConnectionTest
 EXPOSE 3050
 
+# install Java SDK /opt/oracle/tools/java/sdk
+# lib/ contains libraries & third-party/lib contains dependencies
+WORKDIR /opt/oracle/tools/java/sdk
+ADD https://github.com/oracle/oci-java-sdk/releases/download/v1.2.47/oci-java-sdk.zip .
+RUN unzip oci-java-sdk.zip && \
+    rm oci-java-sdk.zip
 
+# install JDBC /opt/oracle/tools/java
+ENV JDBC_DIR /opt/oracle/tools/java
+WORKDIR ${JDBC_DIR}
+ADD ojdbc8-full.tar.gz .
+RUN tar xvzf ojdbc8-full.tar.gz
+
+# Sample apps - /opt/oracle/apps/<app_name>
+ENV JAVA_APP /opt/oracle/apps/ATP-REST-Java
+WORKDIR ${JAVA_APP}
+ADD https://github.com/sblack4/ATP-REST-Java/releases/download/v0.1/atp-rest-scripts.jar .
+ADD run-java-examples.sh .
+ADD picocli-3.6.1.jar .
+RUN mkdir lib && \
+    mv picocli-3.6.1.jar lib
+ENV PATH $PATH:${JAVA_APP}
 
 # Uninstall packages
 RUN echo "Cleaning up yum packages........................." && \
     yum -y remove unzip && \
     yum -y remove git
    
+CMD ["sh", "run-java-examples.sh"]

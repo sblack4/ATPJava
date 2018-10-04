@@ -3,13 +3,13 @@ REST APIs for Oracle Autonomous Transaciton Processing Service written in Java
 
 
 ## Objectives 
-- [x] A base image based on frolvlad/alpine-glibc:alpine-3.8  that includes Oracle instant client 18.3, sqlplus and sqlcl for basic sql connectivity to an oracle ATP database
-https://hub.docker.com/r/frolvlad/alpine-glibc/
-- [x]  A python, **Java** and node.js image each built on the base image and layered with drivers to connect respective language programs to an ATP database seamlessly Oracle Cloud Infrastructure CLI
+- [x] A base image based on Oracle linux
+- [x]  A **python**, **Java** and **node.js** image each built on the base image and layered with drivers to connect respective language programs to an ATP database seamlessly Oracle Cloud Infrastructure CLI
     - [x] instant client
     - [x] SQLcl
     - [x] Java SDK
     - [x] Oracle JDBC driver
+    - [ ] SQL Plus 
 - [x] API language scripts for listing, creating, scaling, backing up an ATP instance
 - [ ] A sample program that can take a mapped ATP credentials .zip file and connect to the database
 

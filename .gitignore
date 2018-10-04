@@ -1,10 +1,18 @@
-*.jar
 
+# Java
+*.jar
+target
+.idea
+
+# Python
+*.pyc
+
+# secret stuff
 .oci/config
 *.pem
+.md
 
-target
-
-.idea 
-
-SECRETS.md
+# stuff for building the docker container
+*.rpm
+*.zip
+*.tar.gz
