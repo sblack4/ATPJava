@@ -39,7 +39,7 @@ public class ATPConnectionTest implements Runnable {
                     "\n\tuser=admin" +
                     "\n\tservicename=oci.ok.123" +
                     "\n\twalletdir=/tmp/my_wallet")
-    public String dbconfig = Paths.get(".").toAbsolutePath().toString();
+    public String dbconfig = Paths.get(".").toAbsolutePath().toString() + "/db.config";
 
     private void parseConfigLine(String line) {
         String[] keyVal = line.split("=");

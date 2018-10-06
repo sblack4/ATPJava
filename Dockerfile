@@ -87,7 +87,7 @@ RUN git clone https://github.com/sblack4/ATP-REST-Java.git ATPJava && \
 WORKDIR ${JAVA_APP}/ATPJava
 ADD https://github.com/sblack4/ATP-REST-Java/releases/download/V0.2/atp-rest-scripts.jar .
 ADD picocli-3.6.1.jar lib
-ENV PATH $PATH:${JAVA_APP}/ATPJava
+ENV PATH $PATH:${JAVA_APP}/ATPJava/bin
 
 # Python
 ENV PYTHON_APP /opt/oracle/tools/python/sdk
