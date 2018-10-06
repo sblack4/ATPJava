@@ -21,16 +21,16 @@ because the [Class Path](https://docs.oracle.com/javase/tutorial/essential/envir
 to make demoing the functionality easier :) 
 
 listed as `COMMAND [-h for help] [arg_1 arg_2 ...]` 
-- `createAutonomousDatabase` DBNAME DISPLAYNAME PASSWORD CPUCOUNT STORAGEINTBS
-- `deleteAutonomousDatabase` DBOCID
-- `getAutonomousDatabase` DBOCID
-- `listAutonomousDatabases` - no arguments
-- `startAutonomousDatabase` DBOCID
-- `stopAutonomousDatabase` DBOCID
-- `backupAutonomousDatabase` – is not included
-- `restoreAutonomousDatabase` DBOCID time
-- `updateAutonomousDatabase` CPUCount StorageInTBs DBOCID
-- `ATPConnectionTest` DB_USER DB_PASSWD WALLET_DIR
+- [x] `createAutonomousDatabase` DBNAME DISPLAYNAME PASSWORD CPUCOUNT STORAGEINTBS
+- [ ] `deleteAutonomousDatabase` DBOCID
+- [ ] `getAutonomousDatabase` DBOCID
+- [ ] `listAutonomousDatabases` - no arguments
+- [ ] `startAutonomousDatabase` DBOCID
+- [ ] `stopAutonomousDatabase` DBOCID
+- [ ] `backupAutonomousDatabase` – is not included
+- [ ] `restoreAutonomousDatabase` DBOCID time
+- [ ] `updateAutonomousDatabase` CPUCount StorageInTBs DBOCID
+- [x] `ATPConnectionTest` DB_USER DB_PASSWD WALLET_DIR
 
 ## About
 Try out the Oracle Cloud Infrastructure Java SDK! I've tried to make this as simple as possible, but to *reallly* use the SDK you must read the docs! For developing with the `java` SDK read the java sdk docs, but if all you want to do is run this app you can get by with the SDK/CLI configuration docs. They will walk you through getting the required values to authenticate. 

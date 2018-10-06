@@ -13,6 +13,9 @@ import com.oracle.bmc.database.responses.GetAutonomousDatabaseResponse;
 import picocli.CommandLine.*;
 import picocli.CommandLine;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 
@@ -24,30 +27,95 @@ import java.util.Random;
  */
 @Command(name="create",
         header = "@|fg(5;0;0),bg(0;0;0) Create an ATP instance with the JAVA OCI SDK |@" )
+
 public class createAutonomousDatabase implements Runnable {
-    @Parameters(id="0",
-            description = "Compartment ID, retrieved from OCI Config")
-    public String compartmentId;
 
-    @Option(names={"-dn", "--display-name"}, description = "Display Name for DB, defaults to ${DEFAULT-VALUE}")
-    public String displayName = "javaSDKExample";
+    @Parameters(index ="0", arity = "0..1",
+        description = "Database Name, by default randomly generates one")
+    public String dbName;
 
-    @Option(names={"-p", "--password"}, description = "Password for DB, defaults to ${DEFAULT-VALUE}")
-    public String password = "Welcome123123123#";
+    @Parameters(index ="1", arity = "0..1",
+            description = "Display Name for DB, by default randomly generates one")
+    public String displayName;
 
-    @Option(names={"-cpu", "--cpu-count"}, description = "CPU Cores, defaults to ${DEFAULT-VALUE}")
+    @Parameters(index = "2", arity = "0..1",
+            description = "Password for DB, by default randomly generates one")
+    public String password;
+
+   @Parameters(index = "3", arity = "0..1",
+           description = "CPU Cores, defaults to ${DEFAULT-VALUE}")
     public Integer cpuCount = 1;
 
-    @Option(names={"-tb", "--db-size"}, description = "DB size in TBs, defaults to ${DEFAULT-VALUE}")
+    @Parameters(index = "4", arity = "0..1",
+            description = "DB size in TBs, defaults to ${DEFAULT-VALUE}")
     public Integer dbSize = 1;
 
-    @Option(names={"-c", "--config"}, description = "OCI Config file path, defaults to '~/.oci/config")
+    @Option(names={"-cid", "--compartment-id"},
+            description = "Compartment ID, by default it is retrieved from OCI Config")
+    public String compartmentId;
+
+    @Option(names={"-c", "--config"},
+            description = "OCI Config file path, defaults to '~/.oci/config")
     public String configurationFilePath = "~/.oci/config";
 
-    @Option(names = { "-h", "--help" }, usageHelp = true, description = "Displays this help message and quits.")
+    @Option(names = { "-h", "--help" }, usageHelp = true,
+            description = "Displays this help message and quits.")
     private boolean helpRequested = false;
 
+    private final String[] funNamesList = new String[]{
+            "Floof",
+            "Einstein",
+            "Dancing",
+            "Tesla",
+            "Dinosaur",
+            "Autonomous",
+            "Database",
+            "Ellison",
+            "Robot",
+            "_As_A_Service_",
+            "Integrated",
+            "Party",
+            "Puppy",
+            "Kitten",
+            "InMemory", "ActiveDataGuard", "AdvancedAnalytics", "Multitenant", "OLAP",
+            "Partitioning", "RealApplicationClusters", "Sharding", "OracleApplicationExpress",
+            "APEX", "SQL", "PL/SQL", "AutomaticStorageManagement", "OracleSecureBackup",
+            "Java", "Linux", "Happiness", "Jumping", "Future"
+    };
+
+    private List<String> funNames = Arrays.asList(this.funNamesList);
+
+
+    /**
+     * Yay tail recursion!
+     * @param numNames the number of names you'd like
+     * @return new name(s) from the numNamesList
+     */
+    public String getRandomFunName(Integer numNames) {
+        if (numNames < 1) {
+            return "";
+        }
+        Integer numNameListLen = 30;
+        Random rand = new Random();
+        Integer randNum = rand.nextInt(numNameListLen);
+        String newName = funNames.get(randNum);
+        return newName + getRandomFunName(numNames - 1);
+    }
+
+    public void generateDetails() {
+        if (this.dbName == null) {
+            this.dbName = getRandomFunName(3);
+        }
+        if (this.displayName == null) {
+            this.displayName = getRandomFunName(4);
+        }
+        if (this.password == null) {
+
+            this.password = getRandomFunName(3) +  "2018!";
+        }
+    }
     public void run() {
+        this.generateDetails();
         String profile = "DEFAULT";
         AuthenticationDetailsProvider provider;
 
@@ -61,13 +129,12 @@ public class createAutonomousDatabase implements Runnable {
             DatabaseClient dbClient = new DatabaseClient(provider);
 
             // Create
-            Random rand = new Random();
             CreateAutonomousDatabaseDetails createRequest = CreateAutonomousDatabaseDetails.builder()
                     .cpuCoreCount(cpuCount)
                     .dataStorageSizeInTBs(dbSize)
                     .displayName(displayName)
                     .adminPassword(password)
-                    .dbName("javaSdkExam" + rand.nextInt(500))
+                    .dbName(dbName)
                     .compartmentId(compartmentId)
                     .licenseModel(CreateAutonomousDatabaseDetails.LicenseModel.LicenseIncluded)
                     .build();
@@ -123,6 +190,7 @@ public class createAutonomousDatabase implements Runnable {
     }
 
     public static void main(String[] args) {
-        CommandLine.run(new createAutonomousDatabase(), args);
+        createAutonomousDatabase createAutonomousDatabaseObj = new createAutonomousDatabase();
+        CommandLine.run(createAutonomousDatabaseObj, args);
     }
 }
