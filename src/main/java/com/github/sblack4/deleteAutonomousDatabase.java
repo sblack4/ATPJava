@@ -9,17 +9,19 @@ import com.oracle.bmc.database.model.AutonomousDatabase;
 import com.oracle.bmc.database.requests.*;
 import com.oracle.bmc.database.responses.GetAutonomousDatabaseResponse;
 import picocli.CommandLine;
-
-import static picocli.CommandLine.Command;
-import static picocli.CommandLine.Option;
+import picocli.CommandLine.*;
 
 
-@Command(name="delete", header = "@|fg(5;0;0),bg(0;0;0)  Delete an ATP instance with the JAVA OCI SDK |@" )
+/**
+ * should conform to usage:
+ *      deleteAutonomousDatabase DBOCID
+ */
+@Command(name="delete",
+        header = "@|fg(5;0;0),bg(0;0;0)  Delete an ATP instance with the JAVA OCI SDK |@" )
 public class deleteAutonomousDatabase implements Runnable {
-    @Option(names={"-cid", "--compartment-id"}, description = "Compartment ID, retrieved from OCI Config")
-    public String compartmentId;
 
-    @Option(names={"-Id", "--adw-id"}, required = true, description = "Autonomous ATPConnectionTest ID")
+   @Parameters(index = "0",
+           description = "Autonomous ATPConnectionTest ID")
     public String adwId;
 
     @Option(names={"-c", "--config"}, description = "OCI Config file path, defaults to ${DEFAULT-VALUE}")

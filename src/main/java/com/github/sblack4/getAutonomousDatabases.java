@@ -7,17 +7,19 @@ import com.oracle.bmc.database.DatabaseClient;
 import com.oracle.bmc.database.model.AutonomousDatabase;
 import com.oracle.bmc.database.requests.GetAutonomousDatabaseRequest;
 import picocli.CommandLine;
+import picocli.CommandLine.*;
 
 
-import static picocli.CommandLine.Command;
-import static picocli.CommandLine.Option;
-
-
+/**
+ * `getAutonomousDatabase` DBOCID
+ */
 @Command(name="get",
         sortOptions = false,
         header = "@|fg(5;0;0),bg(0;0;0)  Get an ATP instance with the JAVA OCI SDK |@" )
 public class getAutonomousDatabases implements Runnable {
-    @Option(names={"-id", "--adw-id"}, required = true, description = "Autonomous Database ID")
+
+    @Parameters(index = "0",
+            description = "Autonomous Database ID")
     public String adwId;
 
     @Option(names={"-cid", "--compartment-id"}, description = "Compartment ID, retrieved from OCI Config")

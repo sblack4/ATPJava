@@ -1,6 +1,5 @@
 package com.github.sblack4;
 
-import com.oracle.bmc.Region;
 import com.oracle.bmc.auth.AuthenticationDetailsProvider;
 import com.oracle.bmc.auth.ConfigFileAuthenticationDetailsProvider;
 import com.oracle.bmc.database.DatabaseClient;
@@ -8,19 +7,21 @@ import com.oracle.bmc.database.DatabaseWaiters;
 import com.oracle.bmc.database.model.AutonomousDatabase;
 import com.oracle.bmc.database.requests.GetAutonomousDatabaseRequest;
 import com.oracle.bmc.database.requests.StartAutonomousDatabaseRequest;
-import com.oracle.bmc.database.requests.StopAutonomousDatabaseRequest;
 import com.oracle.bmc.database.responses.GetAutonomousDatabaseResponse;
 import picocli.CommandLine;
-
-import static picocli.CommandLine.Command;
-import static picocli.CommandLine.Option;
+import picocli.CommandLine.*;
 
 
+/**
+ * call with:
+ *      startAutonomousDatabase DBOCID
+ */
 @Command(name="start",
         sortOptions = false,
         header = "@|fg(5;0;0),bg(0;0;0)  Start an ATP instance with the JAVA OCI SDK |@" )
 public class startAutonomousDatabase implements Runnable {
-    @Option(names={"-Id", "--adwId"}, required = true, description = "Autonomous ATPConnectionTest ID")
+    @Parameters(index = "0",
+            description = "Autonomous ATPConnectionTest ID")
     public String adwId;
 
     @Option(names={"-cid", "--compartment-id"}, description = "Compartment ID, retrieved from OCI Config")

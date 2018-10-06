@@ -1,30 +1,28 @@
 package com.github.sblack4;
 
-import com.oracle.bmc.Region;
 import com.oracle.bmc.auth.AuthenticationDetailsProvider;
 import com.oracle.bmc.auth.ConfigFileAuthenticationDetailsProvider;
 import com.oracle.bmc.database.DatabaseClient;
 import com.oracle.bmc.database.DatabaseWaiters;
 import com.oracle.bmc.database.model.AutonomousDatabase;
-import com.oracle.bmc.database.requests.DeleteAutonomousDatabaseRequest;
 import com.oracle.bmc.database.requests.GetAutonomousDatabaseRequest;
 import com.oracle.bmc.database.requests.StopAutonomousDatabaseRequest;
 import com.oracle.bmc.database.responses.GetAutonomousDatabaseResponse;
 import picocli.CommandLine;
-
-import static picocli.CommandLine.Command;
-import static picocli.CommandLine.Option;
+import picocli.CommandLine.*;
 
 
+/**
+ * should run with:
+ *      stopAutonomousDatabase DBOCID
+ */
 @Command(name="stop",
         sortOptions = false,
         header = "@|fg(5;0;0),bg(0;0;0)  Stop an ATP instance with the JAVA OCI SDK |@" )
 public class stopAutonomousDatabase implements Runnable {
-    @Option(names={"-id", "--adw-id"}, required = true, description = "Autonomous ATPConnectionTest ID")
+    @Parameters(index = "0",
+           description = "Autonomous ATPConnectionTest ID")
     public String adwId;
-
-    @Option(names={"-cid", "--compartment-id"}, description = "Compartment ID, retrieved from OCI Config")
-    public String compartmentId;
 
     @Option(names={"-c", "--config"}, description = "OCI Config file path, defaults to ${DEFAULT-VALUE}")
     public String configurationFilePath = "~/.oci/config";

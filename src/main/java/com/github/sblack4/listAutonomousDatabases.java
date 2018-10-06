@@ -15,6 +15,9 @@ import static picocli.CommandLine.Command;
 import static picocli.CommandLine.Option;
 
 
+/**
+ * listAutonomousDatabases - no necessary args
+ */
 @Command(name="list", header = "@|fg(5;0;0),bg(0;0;0) Delete an ATP instance with the JAVA OCI SDK |@" )
 public class listAutonomousDatabases implements Runnable {
     @Option(names={"-cid", "--compartment-id"}, description = "Compartment ID, retrieved from OCI Config")

@@ -22,15 +22,28 @@ to make demoing the functionality easier :)
 
 listed as `COMMAND [-h for help] [arg_1 arg_2 ...]` 
 - [x] `createAutonomousDatabase` DBNAME DISPLAYNAME PASSWORD CPUCOUNT STORAGEINTBS
-- [ ] `deleteAutonomousDatabase` DBOCID
-- [ ] `getAutonomousDatabase` DBOCID
-- [ ] `listAutonomousDatabases` - no arguments
-- [ ] `startAutonomousDatabase` DBOCID
-- [ ] `stopAutonomousDatabase` DBOCID
-- [ ] `backupAutonomousDatabase` – is not included
+- [x] `deleteAutonomousDatabase` DBOCID
+- [x] `getAutonomousDatabase` DBOCID
+- [x] `listAutonomousDatabases` - no arguments
+- [x] `startAutonomousDatabase` DBOCID
+- [x] `stopAutonomousDatabase` DBOCID
+- [ ] `backupAutonomousDatabase` DBOCID
 - [ ] `restoreAutonomousDatabase` DBOCID time
-- [ ] `updateAutonomousDatabase` CPUCount StorageInTBs DBOCID
+- [x] `updateAutonomousDatabase` CPUCount StorageInTBs DBOCID
 - [x] `ATPConnectionTest` DB_USER DB_PASSWD WALLET_DIR
+
+`ATPConnectionTest` can also be called directly 
+if you include a file, `db.config`, like
+```text
+ DB_USER=admin
+ DB_PASSWD=Welcome123456!
+ WALLET_DIR=/tmp/wallet_ilovedata
+```
+to do this either place the db.config file in the `target` folder
+or specify the file location like this 
+```bash
+ATPConnectionText -c /tmp/db.config
+```
 
 ## About
 Try out the Oracle Cloud Infrastructure Java SDK! I've tried to make this as simple as possible, but to *reallly* use the SDK you must read the docs! For developing with the `java` SDK read the java sdk docs, but if all you want to do is run this app you can get by with the SDK/CLI configuration docs. They will walk you through getting the required values to authenticate. 

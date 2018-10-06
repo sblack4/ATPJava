@@ -1,6 +1,5 @@
 package com.github.sblack4;
 
-import com.oracle.bmc.Region;
 import com.oracle.bmc.auth.AuthenticationDetailsProvider;
 import com.oracle.bmc.auth.ConfigFileAuthenticationDetailsProvider;
 import com.oracle.bmc.database.DatabaseClient;
@@ -11,22 +10,25 @@ import com.oracle.bmc.database.requests.*;
 import com.oracle.bmc.database.responses.GetAutonomousDatabaseResponse;
 import com.oracle.bmc.database.responses.UpdateAutonomousDatabaseResponse;
 import picocli.CommandLine;
-import static picocli.CommandLine.Command;
-import static picocli.CommandLine.Option;
+import picocli.CommandLine.*;
 
 
+/**
+ * should respond to:
+ *      updateAutonomousDatabase DBOCID CPUCount StorageInTBs
+ */
 @Command(name="update", header = "@|fg(5;0;0),bg(0;0;0) Scale an ATP instance with the JAVA OCI SDK |@" )
 public class updateAutonomousDatabase implements Runnable {
-    @Option(names={"-cid", "--compartment-id"}, description = "Compartment ID, retrieved from OCI Config")
-    public String compartmentId;
-
-    @Option(names={"-id", "--adw-id"}, required = true, description = "Autonomous ATPConnectionTest ID")
+    @Parameters(index = "0",
+            description = "Autonomous ATPConnectionTest ID")
     public String adwId;
 
-    @Option(names={"-cpu", "--cpuCount"}, description = "CPU Cores, defaults to ${DEFAULT-VALUE}")
+    @Parameters(index = "1", arity = "0..1",
+           description = "CPU Cores, defaults to ${DEFAULT-VALUE}")
     public Integer cpuCount = 2;
 
-    @Option(names={"-tb", "--db-size"}, description = "DB size in TBs, defaults to ${DEFAULT-VALUE}")
+    @Parameters(index = "2", arity = "0..1",
+            description = "DB size in TBs, defaults to ${DEFAULT-VALUE}")
     public Integer dbSize = 2;
 
     @Option(names={"-c", "--config"}, description = "OCI Config file path, defaults to ${DEFAULT-VALUE}")
