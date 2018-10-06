@@ -1,4 +1,7 @@
 
+!ATPJava.tar.gz
+!lib.tar.gz
+
 # Java
 *.jar
 target
