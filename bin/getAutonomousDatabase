@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+#
+# sblack.rocks 2018-09
+# getAutonomousDatabase DBOCID
+
+command="get"
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+
+bash "$DIR/../java-runner.sh" "$command" "$@"

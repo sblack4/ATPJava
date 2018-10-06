@@ -5,20 +5,30 @@ import java.util.*;
 import java.nio.file.*;
 import java.lang.RuntimeException;
 import java.net.URISyntaxException;
+import java.lang.ProcessBuilder.Redirect;
 
-public class ATPConnectionTest {
+/**
+ * createAutonomousDatabase DBNAME DISPLAYNAME PASSWORD CPUCOUNT STORAGEINTBS
+ */
+public class createAutonomousDatabase {
     public String DB_USER;
-    public String DB_PASSWD;
     public String WALLET_DIR;
     private String dbConfig = "./db.config";
+    private String dbname;
+    private String displayName;
+    private String password;
+    private String cpucount;
+    private String storageInTbs;
 
     public static void printUsage() {
-        String usage = "\nUsage:\njava ATPConnectionTest DB_USER DB_PASSWD WALLET_DIR \n\n" +
-                "Or pass all as blank to read db.config from this directory \n" +
-                "Example ./db.config: \n " +
-                "\tDB_USER=admin \n" +
-                "\tDB_PASSWD=Welcome123456! \n" +
-                "\tWALLET_DIR=/tmp/wallet_ilovedata \n";
+        String usage = "\nUSAGE:\n\tjava createAutonomousDatabase DBNAME DISPLAYNAME PASSWORD CPUCOUNT STORAGEINTBS" +
+                "Or pass no args to read db.config file from this directory \n" +
+                "\nEXAMPLE: ./db.config: " +
+                "\n\tDBNAME=mydatabase123" + "" +
+                "\n\tDISPLAYNAME=mydatabase" + "" +
+                "\n\tPASSWORD=SuperStringPassword123!" + "" +
+                "\n\tCPUCOUNT=1" + "" +
+                "\n\tSTORAGEINTBS=1";
 
         System.out.println(usage);
     }
@@ -76,15 +86,18 @@ public class ATPConnectionTest {
     }
 
     public String getClassPath() {
+        // things might be in other places
+        // because one version of this app is to be deployed to this docker image
+        // another version to OL7 on Oracle Cloud
+        // and yet another on my machine <3
         String thisDir = "./";
         try {
             thisDir = new File(ATPConnectionTest.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
         } catch (Exception ex) {
             System.out.println("Error finding directory of this file " + ex.toString());
         }
-        String jarPath = thisDir + "../target/atp-rest-scripts.jar";
-        String bigLibPath = thisDir + "../lib/*";
-        // things might be in other places
+        String jarPath = thisDir + "/../target/atp-rest-scripts.jar";
+        String bigLibPath = thisDir + "/../lib/*";
         String jdbcLib = "/opt/oracle/tools/java/ojdbc8-full/*";
         String sdkBase = "/opt/oracle/tools/java/sdk";
         String sdkLib = sdkBase + "/lib/*:" + sdkBase + "/third-party/lib/*";
@@ -103,20 +116,26 @@ public class ATPConnectionTest {
     }
 
     public void executeCommand() throws IOException {
-        String command = this.getCommand();
+        String commandString = this.getCommand();
+
+        List<String> command = new ArrayList<String>();
+        for(String cmd : commandString.split(" ")) {
+            command.add(cmd);
+        }
 
         ProcessBuilder builder = new ProcessBuilder(command);
-        Map<String, String> environ = builder.environment();
+        builder.redirectInput(Redirect.INHERIT);
+//        builder.redirectError(Redirect.INHERIT);
 
+//        final Process process = builder.inheritIO().start();
         final Process process = builder.start();
-        InputStream is = process.getInputStream();
-        InputStreamReader isr = new InputStreamReader(is);
-        BufferedReader br = new BufferedReader(isr);
-        String line;
-        while ((line = br.readLine()) != null) {
-            System.out.println(line);
+
+        try {
+            process.waitFor();
+        } catch (InterruptedException iex) {
+            System.out.println("Error. Process interrupted. \n");
+            iex.printStackTrace();
         }
-        System.out.println("Program terminated!");
     }
 
     public void run(String[] args) {
@@ -139,7 +158,7 @@ public class ATPConnectionTest {
     }
 
     public static void main(String[] args) {
-        ATPConnectionTest atpConnectionTest = new ATPConnectionTest();
+        createAutonomousDatabase atpConnectionTest = new createAutonomousDatabase();
         atpConnectionTest.run(args);
     }
 }

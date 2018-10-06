@@ -1,6 +1,5 @@
 package com.github.sblack4;
 
-import com.oracle.bmc.Region;
 import com.oracle.bmc.auth.AuthenticationDetailsProvider;
 import com.oracle.bmc.auth.ConfigFileAuthenticationDetailsProvider;
 import com.oracle.bmc.database.DatabaseClient;
@@ -11,18 +10,23 @@ import com.oracle.bmc.database.requests.CreateAutonomousDatabaseRequest;
 import com.oracle.bmc.database.requests.GetAutonomousDatabaseRequest;
 import com.oracle.bmc.database.responses.CreateAutonomousDatabaseResponse;
 import com.oracle.bmc.database.responses.GetAutonomousDatabaseResponse;
+import picocli.CommandLine.*;
 import picocli.CommandLine;
 
 import java.util.Random;
 
-import static picocli.CommandLine.Command;
-import static picocli.CommandLine.Option;
 
 
+/**
+ * should be callable by:
+ *      createAutonomousDatabase DBNAME DISPLAYNAME PASSWORD CPUCOUNT STORAGEINTBS
+ *
+ */
 @Command(name="create",
         header = "@|fg(5;0;0),bg(0;0;0) Create an ATP instance with the JAVA OCI SDK |@" )
 public class createAutonomousDatabase implements Runnable {
-    @Option(names={"-cid", "--compartment-id"}, description = "Compartment ID, retrieved from OCI Config")
+    @Parameters(id="0",
+            description = "Compartment ID, retrieved from OCI Config")
     public String compartmentId;
 
     @Option(names={"-dn", "--display-name"}, description = "Display Name for DB, defaults to ${DEFAULT-VALUE}")
