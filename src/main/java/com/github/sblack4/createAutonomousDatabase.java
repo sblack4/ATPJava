@@ -1,5 +1,7 @@
 package com.github.sblack4;
 
+import com.oracle.bmc.Region;
+import com.oracle.bmc.model.BmcException;
 import com.oracle.bmc.auth.AuthenticationDetailsProvider;
 import com.oracle.bmc.auth.ConfigFileAuthenticationDetailsProvider;
 import com.oracle.bmc.database.DatabaseClient;
@@ -13,7 +15,7 @@ import com.oracle.bmc.database.responses.GetAutonomousDatabaseResponse;
 import picocli.CommandLine.*;
 import picocli.CommandLine;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -50,6 +52,14 @@ public class createAutonomousDatabase implements Runnable {
             description = "DB size in TBs, defaults to ${DEFAULT-VALUE}")
     public Integer dbSize = 1;
 
+    @Option(names={"-r", "--region"},
+            description = "region as specified by the enum com.oracle.bmc.Region or it's id " +
+                    ", like EU_FRANKFURT_1 or fra \n" +
+                    "UK_LONDON_1 or lhr \n" +
+                    "US_ASHBURN_1 or iad \n" +
+                    "US_PHOENIX_1  or phx \n etc..")
+    public String regionOrId;
+
     @Option(names={"-cid", "--compartment-id"},
             description = "Compartment ID, by default it is retrieved from OCI Config")
     public String compartmentId;
@@ -85,7 +95,6 @@ public class createAutonomousDatabase implements Runnable {
 
     private List<String> funNames = Arrays.asList(this.funNamesList);
 
-
     /**
      * Yay tail recursion!
      * @param numNames the number of names you'd like
@@ -114,6 +123,23 @@ public class createAutonomousDatabase implements Runnable {
             this.password = getRandomFunName(3) +  "2018!";
         }
     }
+
+    // === okay, enough fun. back to the business logic
+
+    public Region getRegion() {
+        // I think this is
+        Region region = Region.US_PHOENIX_1;
+
+        try {
+            region = Region.fromRegionCodeOrId(this.regionOrId);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            System.out.println("Using default region" + region.toString());
+        }
+
+        return region;
+    }
+
     public void run() {
         this.generateDetails();
         String profile = "DEFAULT";
@@ -127,6 +153,9 @@ public class createAutonomousDatabase implements Runnable {
             System.out.println(provider.toString());
 
             DatabaseClient dbClient = new DatabaseClient(provider);
+
+            Region region = getRegion();
+            dbClient.setRegion(region);
 
             // Create
             CreateAutonomousDatabaseDetails createRequest = CreateAutonomousDatabaseDetails.builder()
@@ -181,11 +210,24 @@ public class createAutonomousDatabase implements Runnable {
             System.out.println("================================");
             System.out.println("=== DONE ===");
 
-        } catch (Exception ex) {
+        } catch (BmcException ex) {
             System.out.println("================================");
             System.out.println("=== ERROR ===");
+            System.out.println(ex.getMessage());
             System.out.println("================================");
-            System.out.println(ex.toString());
+            System.out.println(ex.getOpcRequestId());
+            System.out.println(ex.getServiceCode());
+            System.out.println(ex.getStatusCode());
+            System.out.println(ex.isClientSide());
+            System.out.println("================================");
+            ex.printStackTrace();
+
+        } catch (IOException ex) {
+            System.out.println("file " + configurationFilePath + " or it's config file caused an error");
+            System.out.println(ex.getMessage());
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 

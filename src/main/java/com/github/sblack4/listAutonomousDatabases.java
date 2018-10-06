@@ -8,11 +8,8 @@ import com.oracle.bmc.database.model.AutonomousDatabaseSummary;
 import com.oracle.bmc.database.requests.ListAutonomousDatabasesRequest;
 import com.oracle.bmc.database.responses.ListAutonomousDatabasesResponse;
 import picocli.CommandLine;
-
+import picocli.CommandLine.*;
 import java.util.List;
-
-import static picocli.CommandLine.Command;
-import static picocli.CommandLine.Option;
 
 
 /**
@@ -20,8 +17,17 @@ import static picocli.CommandLine.Option;
  */
 @Command(name="list", header = "@|fg(5;0;0),bg(0;0;0) Delete an ATP instance with the JAVA OCI SDK |@" )
 public class listAutonomousDatabases implements Runnable {
-    @Option(names={"-cid", "--compartment-id"}, description = "Compartment ID, retrieved from OCI Config")
+    @Parameters(index = "0",
+            description = "Compartment ID, retrieved from OCI Config")
     public String compartmentId;
+
+    @Option(names={"-r", "--region"},
+            description = "region as specified by the enum com.oracle.bmc.Region or it's id " +
+                    ", like EU_FRANKFURT_1 or fra \n" +
+                    "UK_LONDON_1 or lhr \n" +
+                    "US_ASHBURN_1 or iad \n" +
+                    "US_PHOENIX_1  or phx \n etc..")
+    public String regionOrId;
 
     @Option(names={"-c", "--config"}, description = "OCI Config file path, defaults to ${DEFAULT-VALUE}")
     String configurationFilePath = "~/.oci/config";
@@ -32,6 +38,20 @@ public class listAutonomousDatabases implements Runnable {
     @Option(names = { "-h", "--help" }, usageHelp = true,
             description = "Displays this help message and quits.")
     private boolean helpRequested = false;
+
+    public Region getRegion() {
+        // I think this is
+        Region region = Region.US_PHOENIX_1;
+
+        try {
+            region = Region.fromRegionCodeOrId(this.regionOrId);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            System.out.println("Using default region" + region.toString());
+        }
+
+        return region;
+    }
 
     @Override
     public void run() {
@@ -44,6 +64,7 @@ public class listAutonomousDatabases implements Runnable {
             System.out.println(provider.toString());
 
             DatabaseClient dbClient = new DatabaseClient(provider);
+            dbClient.setRegion(this.getRegion());
 
             ListAutonomousDatabasesRequest dbReq = ListAutonomousDatabasesRequest.builder()
                             .compartmentId(compartmentId)

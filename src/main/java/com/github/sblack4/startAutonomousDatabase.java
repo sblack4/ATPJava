@@ -6,8 +6,11 @@ import com.oracle.bmc.database.DatabaseClient;
 import com.oracle.bmc.database.DatabaseWaiters;
 import com.oracle.bmc.database.model.AutonomousDatabase;
 import com.oracle.bmc.database.requests.GetAutonomousDatabaseRequest;
+import com.oracle.bmc.database.requests.GetDatabaseRequest;
 import com.oracle.bmc.database.requests.StartAutonomousDatabaseRequest;
 import com.oracle.bmc.database.responses.GetAutonomousDatabaseResponse;
+import com.oracle.bmc.database.responses.StartAutonomousDatabaseResponse;
+import com.oracle.bmc.responses.AsyncHandler;
 import picocli.CommandLine;
 import picocli.CommandLine.*;
 
@@ -19,7 +22,9 @@ import picocli.CommandLine.*;
 @Command(name="start",
         sortOptions = false,
         header = "@|fg(5;0;0),bg(0;0;0)  Start an ATP instance with the JAVA OCI SDK |@" )
-public class startAutonomousDatabase implements Runnable {
+
+public class startAutonomousDatabase extends ATPCLI {
+
     @Parameters(index = "0",
             description = "Autonomous ATPConnectionTest ID")
     public String adwId;
@@ -47,6 +52,7 @@ public class startAutonomousDatabase implements Runnable {
             System.out.println(provider.toString());
 
             DatabaseClient dbClient = new DatabaseClient(provider);
+            dbClient.setRegion(this.getRegion());
 
             // Get
             AutonomousDatabase adw = dbClient.getAutonomousDatabase(
@@ -60,21 +66,25 @@ public class startAutonomousDatabase implements Runnable {
 
             System.out.println("\n================================\n");
             System.out.println("Starting Autonomous Database: \n" + adw);
-            dbClient.startAutonomousDatabase(
+            StartAutonomousDatabaseResponse startAutonomousDatabaseResponse = dbClient.startAutonomousDatabase(
                 StartAutonomousDatabaseRequest.builder()
                         .autonomousDatabaseId(adw.getId())
                         .build());
 
+            AutonomousDatabase autonomousDatabase = startAutonomousDatabaseResponse.getAutonomousDatabase();
+
             DatabaseWaiters waiter = dbClient.getWaiters();
             GetAutonomousDatabaseResponse response = waiter.forAutonomousDatabase(
-                                GetAutonomousDatabaseRequest.builder()
-                                        .autonomousDatabaseId(adw.getId())
-                                        .build(),
-                                AutonomousDatabase.LifecycleState.Available
+                    GetAutonomousDatabaseRequest.builder()
+                            .autonomousDatabaseId(adw.getId())
+                            .build(),
+                    AutonomousDatabase.LifecycleState.Starting
                 ).execute();
+
 
             System.out.println("\n================================\n");
             System.out.println("Request for Available Instance returned: \n" + response.getAutonomousDatabase());
+            System.out.println("Request for Available Instance returned: \n" + autonomousDatabase);
 
             System.out.println("\n======== DONE ========\n");
             System.out.println("\n================================\n");

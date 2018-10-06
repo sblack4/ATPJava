@@ -16,7 +16,7 @@ import picocli.CommandLine.*;
 @Command(name="get",
         sortOptions = false,
         header = "@|fg(5;0;0),bg(0;0;0)  Get an ATP instance with the JAVA OCI SDK |@" )
-public class getAutonomousDatabases implements Runnable {
+public class getAutonomousDatabases extends ATPCLI {
 
     @Parameters(index = "0",
             description = "Autonomous Database ID")
@@ -46,6 +46,7 @@ public class getAutonomousDatabases implements Runnable {
             System.out.println(provider.toString());
 
             DatabaseClient dbClient = new DatabaseClient(provider);
+            dbClient.setRegion(this.getRegion());
 
             AutonomousDatabase item = dbClient.getAutonomousDatabase(
                     GetAutonomousDatabaseRequest.builder()

@@ -18,7 +18,8 @@ import picocli.CommandLine.*;
  */
 @Command(name="delete",
         header = "@|fg(5;0;0),bg(0;0;0)  Delete an ATP instance with the JAVA OCI SDK |@" )
-public class deleteAutonomousDatabase implements Runnable {
+
+public class deleteAutonomousDatabase extends ATPCLI {
 
    @Parameters(index = "0",
            description = "Autonomous ATPConnectionTest ID")
@@ -44,6 +45,7 @@ public class deleteAutonomousDatabase implements Runnable {
             System.out.println(provider.toString());
 
             DatabaseClient dbClient = new DatabaseClient(provider);
+            dbClient.setRegion(this.getRegion());
 
             // Get
             AutonomousDatabase adw =

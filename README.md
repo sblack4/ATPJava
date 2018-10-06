@@ -156,3 +156,7 @@ mvn install
 # make that jar
 mvn package
 ```
+
+now you are good to run :) 
+
+

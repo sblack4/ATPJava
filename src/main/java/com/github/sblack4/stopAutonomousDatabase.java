@@ -19,7 +19,7 @@ import picocli.CommandLine.*;
 @Command(name="stop",
         sortOptions = false,
         header = "@|fg(5;0;0),bg(0;0;0)  Stop an ATP instance with the JAVA OCI SDK |@" )
-public class stopAutonomousDatabase implements Runnable {
+public class stopAutonomousDatabase extends ATPCLI {
     @Parameters(index = "0",
            description = "Autonomous ATPConnectionTest ID")
     public String adwId;
@@ -44,6 +44,7 @@ public class stopAutonomousDatabase implements Runnable {
             System.out.println(provider.toString());
 
             DatabaseClient dbClient = new DatabaseClient(provider);
+            dbClient.setRegion(this.getRegion());
 
             // Get
             AutonomousDatabase adw =
