@@ -81,12 +81,10 @@ ADD ojdbc8-full.tar.gz .
 # Java 
 ENV JAVA_APP /opt/oracle/tools/java/sdk
 WORKDIR ${JAVA_APP}
-RUN git clone https://github.com/sblack4/ATP-REST-Java.git ATPJava && \
-    cd ATPJava && \
-    mkdir lib
 WORKDIR ${JAVA_APP}/ATPJava
-ADD https://github.com/sblack4/ATP-REST-Java/releases/download/V0.2/atp-rest-scripts.jar .
-ADD picocli-3.6.1.jar lib
+ADD https://github.com/sblack4/ATP-REST-Java/blob/master/ATPJava.tar.gz .
+RUN tar xzvf ATPJava.tar.gz
+ADD http://central.maven.org/maven2/info/picocli/picocli/3.6.1/picocli-3.6.1.jar lib
 ENV PATH $PATH:${JAVA_APP}/ATPJava/bin
 
 # Python
