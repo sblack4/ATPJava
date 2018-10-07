@@ -11,10 +11,10 @@ This we wanted for this app
     - [x] SQLcl
     - [x] Java SDK
     - [x] Oracle JDBC driver
-    - [ ] SQL Plus 
+    - [x] SQL Plus 
 - [x] API language scripts for listing, creating, scaling, backing up an ATP instance
 - [x] A sample program that can use a wallet .zip file and connect to the database
-- [ ] This list of scripts 
+- [x] Most of this list of scripts 
 
 ### scripts 
 these are the scripts, 
