@@ -1,5 +1,6 @@
-# ATP-REST-Java 
-REST APIs for Oracle Autonomous Transaciton Processing Service written in Java 
+# ATP-SDK_and_JDBC-Java
+Named ATP-REST-Java by historic accident, actually
+[oci-java-sdk](https://github.com/oracle/oci-java-sdk) eamples for Oracle Autonomous Transaciton Processing Service written in Java 
 
 
 ## Objectives 
