@@ -1,6 +1,21 @@
 # ATP-SDK_and_JDBC-Java
 Named ATP-REST-Java by historic accident, actually
-[oci-java-sdk](https://github.com/oracle/oci-java-sdk) eamples for Oracle Autonomous Transaciton Processing Service written in Java 
+[oci-java-sdk](https://github.com/oracle/oci-java-sdk) examples for Oracle Autonomous Transaciton Processing Service written in Java 
+
+## tl;dr
+1. download everything
+```bash
+git clone https://github.com/cloudsolutionhubs/ATPjavaapp.git
+```
+2. unzip the libraries 
+```bash
+tar xvzf lib.tar.gz
+```
+3. configure your `~/.oci` folder, if you haven't already *
+3. run some scripts
+```bash
+bin/listAutonomousDatabase
+```
 
 
 ## Objectives 
