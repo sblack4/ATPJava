@@ -42,7 +42,7 @@ public class createAutonomousDatabase implements Runnable {
 
     @Parameters(index = "2", arity = "0..1",
             description = "Password for DB, by default randomly generates one")
-    public String password;
+    public String password = "Welcome123456!";
 
    @Parameters(index = "3", arity = "0..1",
            description = "CPU Cores, defaults to ${DEFAULT-VALUE}")
@@ -96,6 +96,19 @@ public class createAutonomousDatabase implements Runnable {
     private List<String> funNames = Arrays.asList(this.funNamesList);
 
     /**
+     * gets s.substring(start, len) or s.substring(start, s.length())
+     * Whichever is lesser (to avoid StringIndexOutOfBoundsException)
+     * @param s String
+     * @param start where to start the substring
+     * @param len how long the substring should be
+     * @return String, the substring
+     */
+    public String substringSafe(String s, int start, int len) {
+        int lesserLength = Math.min(s.length(), len);
+        return s.substring(start, lesserLength);
+    }
+
+    /**
      * Yay tail recursion!
      * @param numNames the number of names you'd like
      * @return new name(s) from the numNamesList
@@ -113,14 +126,15 @@ public class createAutonomousDatabase implements Runnable {
 
     public void generateDetails() {
         if (this.dbName == null) {
-            this.dbName = getRandomFunName(3);
+            String funName = getRandomFunName(4);
+            this.dbName = this.substringSafe(funName, 0, 13);
         }
         if (this.displayName == null) {
-            this.displayName = getRandomFunName(4);
+            this.displayName =  getRandomFunName(4);
         }
         if (this.password == null) {
-
-            this.password = getRandomFunName(3) +  "2018!";
+            String funPassword = getRandomFunName(3);
+            this.password = this.substringSafe(funPassword, 0, 29);
         }
     }
 
@@ -151,6 +165,10 @@ public class createAutonomousDatabase implements Runnable {
             System.out.println("\n================================\n");
             System.out.println("Credentials 'n such; ");
             System.out.println(provider.toString());
+
+            if (this.compartmentId == null || this.compartmentId.isEmpty()) {
+                this.compartmentId = provider.getTenantId();
+            }
 
             DatabaseClient dbClient = new DatabaseClient(provider);
 

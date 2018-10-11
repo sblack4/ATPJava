@@ -21,3 +21,5 @@ target
 *.tar.gz
 
 SECRETS.md
+java/sdk
+wallet*

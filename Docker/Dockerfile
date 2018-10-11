@@ -17,10 +17,8 @@ RUN echo "Installing EPEL, python-pip, unzip, libaio, oci_cli, requests, cx_Orac
     yum -y install nodejs npm --enablerepo=epel && \
     yum -y install git && \
     yum -y install nano && \
-    yum clean all
-
-    
-RUN echo 'installing oci_cli, requests, cx_Oracle' && \
+    yum clean all && \
+    echo 'installing oci_cli, requests, cx_Oracle' && \
     pip install oci_cli requests cx_Oracle
 
 
