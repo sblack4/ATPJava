@@ -4,7 +4,7 @@
 # sblack.rocks 2018-09
 # getAutonomousDatabase DBOCID
 
-command="get"
+command="start"
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 

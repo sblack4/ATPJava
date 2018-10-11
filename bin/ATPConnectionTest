@@ -4,7 +4,7 @@
 # sblack.rocks 2018-09
 # createAutonomousDatabase DBNAME DISPLAYNAME PASSWORD CPUCOUNT STORAGEINTBS
 
-command="create"
+command="connect"
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
