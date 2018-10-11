@@ -40,16 +40,16 @@ public class CLI implements Runnable {
         }
 
         // make all the args lowercase
-        String [] lowerArgs = new String[args.length];
-        lowerArgs = Arrays.stream(args)
-                .filter(arg -> !arg.isEmpty())
-                .map(arg -> arg.toLowerCase())
-                .collect(Collectors.toList()).toArray(lowerArgs);
+//        String [] lowerArgs = new String[args.length];
+//        lowerArgs = Arrays.stream(args)
+//                .filter(arg -> !arg.isEmpty())
+//                .map(arg -> arg.toLowerCase())
+//                .collect(Collectors.toList()).toArray(lowerArgs);
 
-        for (String arg : lowerArgs) {
-            System.out.println(arg);
-        }
+//        for (String arg : lowerArgs) {
+//            System.out.println(arg);
+//        }
 
-        CommandLine.run(new CLI(), lowerArgs);
+        CommandLine.run(new CLI(), args);
     }
 }
