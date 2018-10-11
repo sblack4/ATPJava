@@ -2,7 +2,7 @@
 !ATPJava.tar.gz
 !lib.tar.gz
 
-# Java
+# Java, maven & intellij
 *.jar
 target
 .idea
@@ -19,3 +19,5 @@ target
 *.rpm
 *.zip
 *.tar.gz
+
+SECRETS.md

@@ -27,7 +27,7 @@ public class ATPConnectionTest implements Runnable {
 
     @Parameters(index="2", arity = "0..1",
             description = "ATP Wallet path. Should be the path to your unzipped wallet, defaults to ${DEFAULT-VALUE}")
-    public String wallet_dir = "/opt/oracle/database/" + this.serviceName + "/wallet";
+    public String wallet_dir = "/opt/oracle/database/wallet";
 
     @Option(names={"-sn", "--service-name"}, description = "ATPConnectionTest Service Name")
     public String serviceName = "";
