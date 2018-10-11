@@ -77,6 +77,11 @@ public class ATPConnectionTest implements Runnable {
         if(this.password == null || this.user == null || this.wallet_dir == null)
             this.parseDBConfig();
 
+        if (this.serviceName == null) {
+            System.out.println("ERROR");
+            System.out.println("the db service name is null. try passing it in with --sn service-name");
+            return;
+        }
         String wallet_location = String.format("(SOURCE=(METHOD=file)(METHOD_DATA=(DIRECTORY=%s)))", wallet_dir);
         String connection = String.format("jdbc:oracle:thin:@%s_low?TNS_ADMIN=%s",this.serviceName, wallet_dir);
 
