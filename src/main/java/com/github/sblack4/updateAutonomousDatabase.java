@@ -18,7 +18,7 @@ import picocli.CommandLine.*;
  *      updateAutonomousDatabase DBOCID CPUCount StorageInTBs
  */
 @Command(name="update", header = "@|fg(5;0;0),bg(0;0;0) Scale an ATP instance with the JAVA OCI SDK |@" )
-public class updateAutonomousDatabase implements Runnable {
+public class updateAutonomousDatabase extends ATPCLI {
     @Parameters(index = "0",
             description = "Autonomous ATPConnectionTest ID")
     public String adwId;
@@ -49,6 +49,7 @@ public class updateAutonomousDatabase implements Runnable {
             System.out.println(provider.toString());
 
             DatabaseClient dbClient = new DatabaseClient(provider);
+            dbClient.setRegion(this.getRegion());
 
             DatabaseWaiters waiter = dbClient.getWaiters();
 
