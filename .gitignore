@@ -1,6 +1,6 @@
 
-!ATPJava.tar.gz
-!lib.tar.gz
+!ATPJava.zip
+!lib.zip
 
 # Java, maven & intellij
 *.jar
