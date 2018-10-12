@@ -66,16 +66,16 @@ public class deleteAutonomousDatabase extends ATPCLI {
                         .autonomousDatabaseId(adw.getId())
                         .build());
 
-            DatabaseWaiters waiter = dbClient.getWaiters();
-            GetAutonomousDatabaseResponse response = waiter.forAutonomousDatabase(
-                                GetAutonomousDatabaseRequest.builder()
-                                        .autonomousDatabaseId(adw.getId())
-                                        .build(),
-                                AutonomousDatabase.LifecycleState.Terminated
-                ).execute();
-
-            System.out.println("\n================================\n");
-            System.out.println("Request for Terminated Instances: \n" + response.getAutonomousDatabase());
+//            DatabaseWaiters waiter = dbClient.getWaiters();
+//            GetAutonomousDatabaseResponse response = waiter.forAutonomousDatabase(
+//                                GetAutonomousDatabaseRequest.builder()
+//                                        .autonomousDatabaseId(adw.getId())
+//                                        .build(),
+//                                AutonomousDatabase.LifecycleState.Terminated
+//                ).execute();
+//
+//            System.out.println("\n================================\n");
+//            System.out.println("Request for Terminated Instances: \n" + response.getAutonomousDatabase());
 
             System.out.println("\n======== DONE ========\n");
             System.out.println("\n================================\n");

@@ -141,7 +141,6 @@ public class createAutonomousDatabase implements Runnable {
     // === okay, enough fun. back to the business logic
 
     public Region getRegion() {
-        // I think this is
         Region region = Region.US_PHOENIX_1;
 
         try {
@@ -200,26 +199,26 @@ public class createAutonomousDatabase implements Runnable {
             System.out.println("\n================================\n");
             System.out.println("ATP Shared instance is provisioning with given details: \n" + atpShared);
 
-            DatabaseWaiters waiter = dbClient.getWaiters();
-            GetAutonomousDatabaseResponse provisionedResponse =
-                    waiter.forAutonomousDatabase(
-                            GetAutonomousDatabaseRequest.builder()
-                                    .autonomousDatabaseId(atpShared.getId())
-                                    .build(),
-                            AutonomousDatabase.LifecycleState.Available)
-                            .execute();
-
-            atpShared = provisionedResponse.getAutonomousDatabase();
-
-            System.out.println("\n================================\n");
-            System.out.println("Instance is provisioned:\n" + atpShared);
-
-            // Get
-            atpShared = dbClient.getAutonomousDatabase(
-                    GetAutonomousDatabaseRequest.builder()
-                            .autonomousDatabaseId(atpShared.getId())
-                            .build()
-            ).getAutonomousDatabase();
+//            DatabaseWaiters waiter = dbClient.getWaiters();
+//            GetAutonomousDatabaseResponse provisionedResponse =
+//                    waiter.forAutonomousDatabase(
+//                            GetAutonomousDatabaseRequest.builder()
+//                                    .autonomousDatabaseId(atpShared.getId())
+//                                    .build(),
+//                            AutonomousDatabase.LifecycleState.Available)
+//                            .execute();
+//
+//            atpShared = provisionedResponse.getAutonomousDatabase();
+//
+//            System.out.println("\n================================\n");
+//            System.out.println("Instance is provisioned:\n" + atpShared);
+//
+//            // Get
+//            atpShared = dbClient.getAutonomousDatabase(
+//                    GetAutonomousDatabaseRequest.builder()
+//                            .autonomousDatabaseId(atpShared.getId())
+//                            .build()
+//            ).getAutonomousDatabase();
 
             System.out.println("\n================================\n");
             System.out.println("GET request returned :\n" + atpShared);

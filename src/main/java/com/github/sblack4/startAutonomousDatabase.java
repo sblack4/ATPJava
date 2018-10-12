@@ -73,17 +73,17 @@ public class startAutonomousDatabase extends ATPCLI {
 
             AutonomousDatabase autonomousDatabase = startAutonomousDatabaseResponse.getAutonomousDatabase();
 
-            DatabaseWaiters waiter = dbClient.getWaiters();
-            GetAutonomousDatabaseResponse response = waiter.forAutonomousDatabase(
-                    GetAutonomousDatabaseRequest.builder()
-                            .autonomousDatabaseId(adw.getId())
-                            .build(),
-                    AutonomousDatabase.LifecycleState.Starting
-                ).execute();
-
-
-            System.out.println("\n================================\n");
-            System.out.println("Request for Available Instance returned: \n" + response.getAutonomousDatabase());
+//            DatabaseWaiters waiter = dbClient.getWaiters();
+//            GetAutonomousDatabaseResponse response = waiter.forAutonomousDatabase(
+//                    GetAutonomousDatabaseRequest.builder()
+//                            .autonomousDatabaseId(adw.getId())
+//                            .build(),
+//                    AutonomousDatabase.LifecycleState.Starting
+//                ).execute();
+//
+//
+//            System.out.println("\n================================\n");
+//            System.out.println("Request for Available Instance returned: \n" + response.getAutonomousDatabase());
             System.out.println("Request for Available Instance returned: \n" + autonomousDatabase);
 
             System.out.println("\n======== DONE ========\n");
