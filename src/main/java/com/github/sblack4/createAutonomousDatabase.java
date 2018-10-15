@@ -92,11 +92,11 @@ public class createAutonomousDatabase extends ATPCLI {
 
     public void generateDetails() {
         if (this.dbName == null) {
-            String funName = getRandomFunName(4);
+            String funName = getRandomFunName(4).replaceAll("[^a-zA-Z0-9]", "");
             this.dbName = this.substringSafe(funName, 0, 13);
         }
         if (this.displayName == null) {
-            this.displayName =  getRandomFunName(4);
+            this.displayName =  getRandomFunName(4).replaceAll("[^a-zA-Z0-9]", "");
         }
         if (this.password == null) {
             String funPassword = getRandomFunName(3);

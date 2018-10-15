@@ -31,9 +31,6 @@ public class deleteAutonomousDatabase extends ATPCLI {
     @Option(names={"-p", "--profile"}, description = "OCI profile, defaults to ${DEFAULT-VALUE}")
     public String profile = "DEFAULT";
 
-    @Option(names = { "-h", "--help" }, usageHelp = true, description = "Displays this help message and quits.")
-    private boolean helpRequested = false;
-
     @Override
     public void run() {
         // busyn-ness logix
