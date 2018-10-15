@@ -24,14 +24,8 @@ public class stopAutonomousDatabase extends ATPCLI {
            description = "Autonomous ATPConnectionTest ID")
     public String adwId;
 
-    @Option(names={"-c", "--config"}, description = "OCI Config file path, defaults to ${DEFAULT-VALUE}")
-    public String configurationFilePath = "~/.oci/config";
-
     @Option(names={"-p", "--profile"}, description = "OCI profile, defaults to ${DEFAULT-VALUE}")
     public String profile = "DEFAULT";
-
-    @Option(names = { "-h", "--help" }, usageHelp = true, description = "Displays this help message and quits.")
-    private boolean helpRequested = false;
 
     @Override
     public void run() {
@@ -44,7 +38,7 @@ public class stopAutonomousDatabase extends ATPCLI {
             System.out.println(provider.toString());
 
             DatabaseClient dbClient = new DatabaseClient(provider);
-            dbClient.setRegion(this.getRegion());
+            dbClient.setRegion(this.getRegion(this.configurationFilePath));
 
             // Get
             AutonomousDatabase adw =
@@ -55,25 +49,12 @@ public class stopAutonomousDatabase extends ATPCLI {
                             .getAutonomousDatabase();
 
             System.out.println("\n================================\n");
-            System.out.println("GET request returned this database:\n" + adw);
-
-            System.out.println("\n================================\n");
             System.out.println("Stopping Autonomous Database: \n" + adw);
+
             dbClient.stopAutonomousDatabase(
                 StopAutonomousDatabaseRequest.builder()
                         .autonomousDatabaseId(adw.getId())
                         .build());
-
-//            DatabaseWaiters waiter = dbClient.getWaiters();
-//            GetAutonomousDatabaseResponse response = waiter.forAutonomousDatabase(
-//                                GetAutonomousDatabaseRequest.builder()
-//                                        .autonomousDatabaseId(adw.getId())
-//                                        .build(),
-//                                AutonomousDatabase.LifecycleState.Stopped
-//                ).execute();
-//
-//            System.out.println("\n================================\n");
-//            System.out.println("Request for Stopped Instance returned: \n" + response.getAutonomousDatabase());
 
             System.out.println("\n======== DONE ========\n");
             System.out.println("\n================================\n");

@@ -22,18 +22,8 @@ public class getAutonomousDatabases extends ATPCLI {
             description = "Autonomous Database ID")
     public String adwId;
 
-    @Option(names={"-cid", "--compartment-id"}, description = "Compartment ID, retrieved from OCI Config")
-    public String compartmentId;
-
-    @Option(names={"-c", "--config"}, description = "OCI Config file path, defaults to ${DEFAULT-VALUE}")
-    String configurationFilePath = "~/.oci/config";
-
     @Option(names={"-p", "--profile"}, description = "OCI profile, defaults to ${DEFAULT-VALUE}")
     String profile = "DEFAULT";
-
-    @Option(names = { "-h", "--help" }, usageHelp = true,
-            description = "Displays this help message and quits.")
-    private boolean helpRequested = false;
 
     @Override
     public void run() {
@@ -46,7 +36,7 @@ public class getAutonomousDatabases extends ATPCLI {
             System.out.println(provider.toString());
 
             DatabaseClient dbClient = new DatabaseClient(provider);
-            dbClient.setRegion(this.getRegion());
+            dbClient.setRegion(this.getRegion(this.configurationFilePath));
 
             AutonomousDatabase item = dbClient.getAutonomousDatabase(
                     GetAutonomousDatabaseRequest.builder()

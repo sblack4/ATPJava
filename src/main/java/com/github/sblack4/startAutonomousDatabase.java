@@ -29,18 +29,6 @@ public class startAutonomousDatabase extends ATPCLI {
             description = "Autonomous ATPConnectionTest ID")
     public String adwId;
 
-    @Option(names={"-cid", "--compartment-id"}, description = "Compartment ID, retrieved from OCI Config")
-    public String compartmentId;
-
-    @Option(names={"-c", "--config"}, description = "OCI Config file path, defaults to ${DEFAULT-VALUE}")
-    public String configurationFilePath = "~/.oci/config";
-
-    @Option(names={"-p", "--profile"}, description = "OCI profile, defaults to ${DEFAULT-VALUE}")
-    public String profile = "DEFAULT";
-
-    @Option(names = { "-h", "--help" }, usageHelp = true, description = "Displays this help message and quits.")
-    private boolean helpRequested = false;
-
     @Override
     public void run() {
         // busyn-ness logix
@@ -52,7 +40,7 @@ public class startAutonomousDatabase extends ATPCLI {
             System.out.println(provider.toString());
 
             DatabaseClient dbClient = new DatabaseClient(provider);
-            dbClient.setRegion(this.getRegion());
+            dbClient.setRegion(this.getRegion(this.configurationFilePath));
 
             // Get
             AutonomousDatabase adw = dbClient.getAutonomousDatabase(
@@ -73,17 +61,6 @@ public class startAutonomousDatabase extends ATPCLI {
 
             AutonomousDatabase autonomousDatabase = startAutonomousDatabaseResponse.getAutonomousDatabase();
 
-//            DatabaseWaiters waiter = dbClient.getWaiters();
-//            GetAutonomousDatabaseResponse response = waiter.forAutonomousDatabase(
-//                    GetAutonomousDatabaseRequest.builder()
-//                            .autonomousDatabaseId(adw.getId())
-//                            .build(),
-//                    AutonomousDatabase.LifecycleState.Starting
-//                ).execute();
-//
-//
-//            System.out.println("\n================================\n");
-//            System.out.println("Request for Available Instance returned: \n" + response.getAutonomousDatabase());
             System.out.println("Request for Available Instance returned: \n" + autonomousDatabase);
 
             System.out.println("\n======== DONE ========\n");

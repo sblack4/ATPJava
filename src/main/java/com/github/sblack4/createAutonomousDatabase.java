@@ -5,13 +5,10 @@ import com.oracle.bmc.model.BmcException;
 import com.oracle.bmc.auth.AuthenticationDetailsProvider;
 import com.oracle.bmc.auth.ConfigFileAuthenticationDetailsProvider;
 import com.oracle.bmc.database.DatabaseClient;
-import com.oracle.bmc.database.DatabaseWaiters;
 import com.oracle.bmc.database.model.AutonomousDatabase;
 import com.oracle.bmc.database.model.CreateAutonomousDatabaseDetails;
 import com.oracle.bmc.database.requests.CreateAutonomousDatabaseRequest;
-import com.oracle.bmc.database.requests.GetAutonomousDatabaseRequest;
 import com.oracle.bmc.database.responses.CreateAutonomousDatabaseResponse;
-import com.oracle.bmc.database.responses.GetAutonomousDatabaseResponse;
 import picocli.CommandLine.*;
 import picocli.CommandLine;
 
@@ -30,7 +27,7 @@ import java.util.Random;
 @Command(name="create",
         header = "@|fg(5;0;0),bg(0;0;0) Create an ATP instance with the JAVA OCI SDK |@" )
 
-public class createAutonomousDatabase implements Runnable {
+public class createAutonomousDatabase extends ATPCLI {
 
     @Parameters(index ="0", arity = "0..1",
         description = "Database Name, by default randomly generates one")
@@ -52,41 +49,10 @@ public class createAutonomousDatabase implements Runnable {
             description = "DB size in TBs, defaults to ${DEFAULT-VALUE}")
     public Integer dbSize = 1;
 
-    @Option(names={"-r", "--region"},
-            description = "region as specified by the enum com.oracle.bmc.Region or it's id " +
-                    ", like EU_FRANKFURT_1 or fra \n" +
-                    "UK_LONDON_1 or lhr \n" +
-                    "US_ASHBURN_1 or iad \n" +
-                    "US_PHOENIX_1  or phx \n etc..")
-    public String regionOrId;
-
-    @Option(names={"-cid", "--compartment-id"},
-            description = "Compartment ID, by default it is retrieved from OCI Config")
-    public String compartmentId;
-
-    @Option(names={"-c", "--config"},
-            description = "OCI Config file path, defaults to '~/.oci/config")
-    public String configurationFilePath = "~/.oci/config";
-
-    @Option(names = { "-h", "--help" }, usageHelp = true,
-            description = "Displays this help message and quits.")
-    private boolean helpRequested = false;
-
     private final String[] funNamesList = new String[]{
-            "Floof",
-            "Einstein",
-            "Dancing",
-            "Tesla",
-            "Dinosaur",
-            "Autonomous",
-            "Database",
-            "Ellison",
-            "Robot",
-            "_As_A_Service_",
-            "Integrated",
-            "Party",
-            "Puppy",
-            "Kitten",
+            "Floof", "Einstein", "Dancing",
+            "Tesla", "Dinosaur", "Autonomous", "Database", "Ellison",
+            "Robot", "_As_A_Service_", "Integrated", "Party", "Puppy", "Kitten",
             "InMemory", "ActiveDataGuard", "AdvancedAnalytics", "Multitenant", "OLAP",
             "Partitioning", "RealApplicationClusters", "Sharding", "OracleApplicationExpress",
             "APEX", "SQL", "PL/SQL", "AutomaticStorageManagement", "OracleSecureBackup",
@@ -140,19 +106,6 @@ public class createAutonomousDatabase implements Runnable {
 
     // === okay, enough fun. back to the business logic
 
-    public Region getRegion() {
-        Region region = Region.US_PHOENIX_1;
-
-        try {
-            region = Region.fromRegionCodeOrId(this.regionOrId);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            System.out.println("Using default region" + region.toString());
-        }
-
-        return region;
-    }
-
     public void run() {
         this.generateDetails();
         String profile = "DEFAULT";
@@ -161,9 +114,12 @@ public class createAutonomousDatabase implements Runnable {
         try {
             provider = new ConfigFileAuthenticationDetailsProvider(configurationFilePath, profile);
 
+
             System.out.println("\n================================\n");
             System.out.println("Credentials 'n such; ");
             System.out.println(provider.toString());
+
+            this.compartmentId = this.getCompartmentId(this.configurationFilePath);
 
             if (this.compartmentId == null || this.compartmentId.isEmpty()) {
                 this.compartmentId = provider.getTenantId();
@@ -171,7 +127,7 @@ public class createAutonomousDatabase implements Runnable {
 
             DatabaseClient dbClient = new DatabaseClient(provider);
 
-            Region region = getRegion();
+            Region region = getRegion(this.configurationFilePath);
             dbClient.setRegion(region);
 
             // Create
@@ -198,30 +154,6 @@ public class createAutonomousDatabase implements Runnable {
 
             System.out.println("\n================================\n");
             System.out.println("ATP Shared instance is provisioning with given details: \n" + atpShared);
-
-//            DatabaseWaiters waiter = dbClient.getWaiters();
-//            GetAutonomousDatabaseResponse provisionedResponse =
-//                    waiter.forAutonomousDatabase(
-//                            GetAutonomousDatabaseRequest.builder()
-//                                    .autonomousDatabaseId(atpShared.getId())
-//                                    .build(),
-//                            AutonomousDatabase.LifecycleState.Available)
-//                            .execute();
-//
-//            atpShared = provisionedResponse.getAutonomousDatabase();
-//
-//            System.out.println("\n================================\n");
-//            System.out.println("Instance is provisioned:\n" + atpShared);
-//
-//            // Get
-//            atpShared = dbClient.getAutonomousDatabase(
-//                    GetAutonomousDatabaseRequest.builder()
-//                            .autonomousDatabaseId(atpShared.getId())
-//                            .build()
-//            ).getAutonomousDatabase();
-
-            System.out.println("\n================================\n");
-            System.out.println("GET request returned :\n" + atpShared);
 
             dbClient.close();
             System.out.println("================================");

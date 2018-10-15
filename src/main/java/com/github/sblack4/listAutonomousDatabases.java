@@ -15,43 +15,12 @@ import java.util.List;
 /**
  * listAutonomousDatabases - no necessary args
  */
-@Command(name="list", header = "@|fg(5;0;0),bg(0;0;0) Delete an ATP instance with the JAVA OCI SDK |@" )
-public class listAutonomousDatabases implements Runnable {
-    @Parameters(index = "0",
-            description = "Compartment ID, retrieved from OCI Config")
-    public String compartmentId;
+@Command(name="list", header = "@|fg(5;0;0),bg(0;0;0) List ATP instances with the JAVA OCI SDK |@" )
+public class listAutonomousDatabases extends ATPCLI {
 
-    @Option(names={"-r", "--region"},
-            description = "region as specified by the enum com.oracle.bmc.Region or it's id " +
-                    ", like EU_FRANKFURT_1 or fra \n" +
-                    "UK_LONDON_1 or lhr \n" +
-                    "US_ASHBURN_1 or iad \n" +
-                    "US_PHOENIX_1  or phx \n etc..")
-    public String regionOrId;
-
-    @Option(names={"-c", "--config"}, description = "OCI Config file path, defaults to ${DEFAULT-VALUE}")
-    String configurationFilePath = "~/.oci/config";
-
-    @Option(names={"-p", "--profile"}, description = "OCI profile, defaults to ${DEFAULT-VALUE}")
+    @Option(names={"-p", "--profile"},
+            description = "OCI profile, defaults to ${DEFAULT-VALUE}")
     String profile = "DEFAULT";
-
-    @Option(names = { "-h", "--help" }, usageHelp = true,
-            description = "Displays this help message and quits.")
-    private boolean helpRequested = false;
-
-    public Region getRegion() {
-        // I think this is
-        Region region = Region.US_PHOENIX_1;
-
-        try {
-            region = Region.fromRegionCodeOrId(this.regionOrId);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            System.out.println("Using default region" + region.toString());
-        }
-
-        return region;
-    }
 
     @Override
     public void run() {
@@ -64,7 +33,8 @@ public class listAutonomousDatabases implements Runnable {
             System.out.println(provider.toString());
 
             DatabaseClient dbClient = new DatabaseClient(provider);
-            dbClient.setRegion(this.getRegion());
+            dbClient.setRegion(this.getRegion(this.configurationFilePath));
+            this.compartmentId = this.getCompartmentId(this.configurationFilePath);
 
             ListAutonomousDatabasesRequest dbReq = ListAutonomousDatabasesRequest.builder()
                             .compartmentId(compartmentId)

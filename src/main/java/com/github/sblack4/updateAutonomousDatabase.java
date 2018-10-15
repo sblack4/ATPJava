@@ -31,12 +31,6 @@ public class updateAutonomousDatabase extends ATPCLI {
             description = "DB size in TBs, defaults to ${DEFAULT-VALUE}")
     public Integer dbSize = 2;
 
-    @Option(names={"-c", "--config"}, description = "OCI Config file path, defaults to ${DEFAULT-VALUE}")
-    public String configurationFilePath = "~/.oci/config";
-
-    @Option(names = { "-h", "--help" }, usageHelp = true, description = "Displays this help message and quits, defaults to ${DEFAULT-VALUE}")
-    private boolean helpRequested = false;
-
     public void run() {
         String profile = "DEFAULT";
         AuthenticationDetailsProvider provider;
@@ -49,7 +43,7 @@ public class updateAutonomousDatabase extends ATPCLI {
             System.out.println(provider.toString());
 
             DatabaseClient dbClient = new DatabaseClient(provider);
-            dbClient.setRegion(this.getRegion());
+            dbClient.setRegion(this.getRegion(this.configurationFilePath));
 
             DatabaseWaiters waiter = dbClient.getWaiters();
 

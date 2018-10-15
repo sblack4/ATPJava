@@ -45,7 +45,7 @@ public class deleteAutonomousDatabase extends ATPCLI {
             System.out.println(provider.toString());
 
             DatabaseClient dbClient = new DatabaseClient(provider);
-            dbClient.setRegion(this.getRegion());
+            dbClient.setRegion(this.getRegion(this.configurationFilePath));
 
             // Get
             AutonomousDatabase adw =
